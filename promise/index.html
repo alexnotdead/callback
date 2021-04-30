@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>JavaScript</title><meta charset="utf-8">
+ </head>
+ <body>
+    <script src="out.js"></script>
+    <script src="dblttl.js"></script>
+    <script src="clicker.js"></script>
+    <script>{ 
+  	console.clear();
+    new Clicker(e => {
+        console.time('t0')
+        console.time('t1');
+        setTimeout(() => {
+            e.target.textContent = 'Hello'; 
+            console.timeEnd('t1'); 
+            console.time('t2')
+            setTimeout(() => {
+                e.target.style.background= 'gold';
+                console.timeEnd('t2'); 
+                console.time('t3')
+                setTimeout(() => {
+                    e.target.style.display = 'none';
+                    console.timeEnd('t3');  
+                    console.timeEnd('t0');
+                },2000);
+            },2000);
+        },3000);
+    }, caption='Click');
+        
+    new Clicker(async () => {
+        //const pr = Promise.reject(2);
+        const pr = new Promise((res, rej) => res('УСПЕХ БЛ'));
+        pr.then(x => console.log(x));
+    }, caption='Click');
+            
+    new Clicker(async () => {
+        const checkAge = age => new Promise((res, rej) => age <= 18? rej('Maloletka ept' + age) : res('Starik'));
+        
+        checkAge(17).then(x => console.log(x)).catch(e => console.log(e));
+    }, 'Start promise').style.zoom = '183%';
+
+    new Clicker(e => {
+        const prT = t => new Promise(res => setTimeout(res, t));
+        console.time('t0');
+        console.time('t1');
+        prT(3000)
+        .then(() => {
+            e.target.textContent = 'working'; 
+            console.timeEnd('t1'); 
+            console.time('t2');
+            return prT(2000);
+        })
+        .then(() => {
+            e.target.textContent = 'and again'; 
+            console.timeEnd('t2'); 
+            console.time('t3');
+            return prT(2000);
+        })
+        .then(() => {
+            e.target.style.display = 'none';
+            console.timeEnd('t3');  
+            console.timeEnd('t0');
+            return 'DONE';
+        })
+        .then(x => {
+            console.log(x);
+        });
+    }, caption='Click to promise');
+
+    new Clicker(async e => {
+        const prT = t => new Promise(res => setTimeout(res, t));
+        console.time('t0');
+        console.time('t1');
+        await prT(3000);
+        
+        e.target.textContent = 'working'; 
+        console.timeEnd('t1'); 
+        console.time('t2');
+        await prT(2000);
+       
+        e.target.textContent = 'and again'; 
+        console.timeEnd('t2'); 
+        console.time('t3');
+        await prT(2000);
+       
+        e.target.style.display = 'none';
+        console.timeEnd('t3');  
+        console.timeEnd('t0');
+        console.log('DONE');
+            
+    }, caption='Click to await');
+        
+   
+    function task(x){
+        const pr = x => new Promise((res, rej) => x < 18? rej('yes') : res('no'));
+        return  pr(x).then(x => x).catch(e => e);
+    }
+    console.log(task(20));
+
+}</script>
+ </body>
+</html>
